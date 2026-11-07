@@ -1,0 +1,15 @@
+[package]
+name = "extentpilot-analysis"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+serde.workspace = true
+libc.workspace = true
+linux-raw-sys = { version = "0.12.1", features = ["ioctl"] }
+
+[dev-dependencies]
+tempfile = "3"
+serde_json.workspace = true
