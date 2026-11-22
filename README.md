@@ -201,3 +201,7 @@ MIT
 See [testing](docs/testing.md), [architecture](docs/architecture.md), and
 [limitations](docs/limitations.md). Privileged backends, history, scheduling, packaging
 and stable-release qualification remain outstanding.
+
+## Author
+
+Built by [Mike Holp](https://www.ai-automation-station.com/about.html) with AI coding tools. See more build guides on [AI Automation Station](https://www.ai-automation-station.com/guides.html), and more projects at [github.com/mikeholp87](https://github.com/mikeholp87).
