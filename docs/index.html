@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ExtentPilot: read-only Linux file extent and fragmentation analyzer</title>
+<meta name="description" content="ExtentPilot is a free, open source Linux tool that measures real file extents with FIEMAP and shows a file schematic and searchable table. Read-only, with a GUI and a JSON CLI report.">
+<link rel="canonical" href="https://mikeholp87.github.io/defrag-hdd-linux/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ExtentPilot: read-only Linux file extent and fragmentation analyzer">
+<meta property="og:description" content="ExtentPilot is a free, open source Linux tool that measures real file extents with FIEMAP and shows a file schematic and searchable table. Read-only, with a GUI and a JSON CLI report.">
+<meta property="og:url" content="https://mikeholp87.github.io/defrag-hdd-linux/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "ExtentPilot", "description": "ExtentPilot is a free, open source Linux tool that measures real file extents with FIEMAP and shows a file schematic and searchable table. Read-only, with a GUI and a JSON CLI report.", "url": "https://mikeholp87.github.io/defrag-hdd-linux/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Linux", "programmingLanguage": "Rust", "codeRepository": "https://github.com/mikeholp87/defrag-hdd-linux", "license": "https://opensource.org/license/mit", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Mike Holp", "url": "https://www.ai-automation-station.com/about.html", "sameAs": ["https://github.com/mikeholp87", "https://www.ai-automation-station.com/"]}}</script>
+<style>
+  :root { --bg: #fafafa; --fg: #1c1c22; --muted: #62626e; --card: #fff; --line: #e3e3ea; --accent: #3b5bdb; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15151a; --fg: #ececf1; --muted: #9a9aa8; --card: #1e1e25; --line: #2e2e38; --accent: #8da9ff; } }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, sans-serif; }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 1rem 2rem; }
+  h1 { margin: 0 0 .5rem; font-size: 2.2rem; }
+  h2 { margin-top: 2.2rem; }
+  a { color: var(--accent); }
+  .lead { font-size: 1.15rem; color: var(--muted); }
+  pre { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; overflow-x: auto; }
+  .note { border-left: 3px solid var(--accent); padding: .1rem 1rem; color: var(--muted); }
+  footer { max-width: 46rem; margin: 0 auto; padding: 1rem 1rem 3rem; color: var(--muted); font-size: .9rem; border-top: 1px solid var(--line); }
+  footer a { margin-right: 1rem; }
+</style>
+</head>
+<body>
+<main>
+<h1>ExtentPilot</h1>
+<p class="lead">A free, open source, read-only extent analyzer for Linux. It measures how files are laid out on disk using the FIEMAP ioctl and never modifies a file.</p>
+<p><a href="https://github.com/mikeholp87/defrag-hdd-linux">View the source on GitHub</a></p>
+<h2>Features</h2>
+<ul>
+<li>Real extent counts, average and largest extent, logical and allocated size per file</li>
+<li>Flags for shared and uncertain extents, with a completeness report for each scan</li>
+<li>Directory walk that rejects symlinks, special files and nested mounts, and deduplicates hard links</li>
+<li>Logical file schematic and a searchable table in the GUI, plus a JSON report from the CLI</li>
+<li>Cooperative cancellation; partial results stay visible</li>
+</ul>
+<h2>Run it</h2>
+<pre>git clone https://github.com/mikeholp87/defrag-hdd-linux
+cd defrag-hdd-linux
+cargo run                          # GUI
+cargo run -- analyze ~/Documents --json &gt; report.json</pre>
+<p>The GUI refuses to run as root. JSON reports contain filenames, so store them privately; file contents are never exported.</p>
+<h2>Status</h2>
+<p class="note">Development build. Analysis only: defragmentation, TRIM, history, scheduling and privileged backends are not implemented, and the schematic is a logical view, not a physical disk map.</p>
+<h2>Related</h2>
+<p>Other projects by the same author: <a href="https://mikeholp87.github.io/Tasky/">Tasky</a>, <a href="https://mikeholp87.github.io/Luma-Launcher/">Luma Launcher</a>, <a href="https://mikeholp87.github.io/Restic-Studio/">Restic Studio</a> and <a href="https://mikeholp87.github.io/">all projects</a>.</p>
+</main>
+<footer>
+<p>ExtentPilot is free and open source under the MIT license. Built by Mike Holp.</p>
+<a href="https://github.com/mikeholp87/defrag-hdd-linux">GitHub</a><a href="https://github.com/mikeholp87/defrag-hdd-linux/issues">Issues</a><a href="https://github.com/mikeholp87/defrag-hdd-linux/blob/main/LICENSE">License</a><a href="https://www.ai-automation-station.com/guides.html">Build guides</a><a href="https://www.ai-automation-station.com/">AI Automation Station</a>
+</footer>
+</body>
+</html>
