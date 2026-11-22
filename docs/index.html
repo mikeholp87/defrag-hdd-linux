@@ -4,14 +4,42 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ExtentPilot: read-only Linux file extent and fragmentation analyzer</title>
-<meta name="description" content="ExtentPilot is a free, open source Linux tool that measures real file extents with FIEMAP and shows a file schematic and searchable table. Read-only, with a GUI and a JSON CLI report.">
+<meta name="description" content="ExtentPilot is a free, read-only Linux file extent analyzer using FIEMAP, with a GUI and JSON CLI. Development build, no defragmentation yet.">
 <link rel="canonical" href="https://mikeholp87.github.io/defrag-hdd-linux/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ExtentPilot: read-only Linux file extent and fragmentation analyzer">
 <meta property="og:description" content="ExtentPilot is a free, open source Linux tool that measures real file extents with FIEMAP and shows a file schematic and searchable table. Read-only, with a GUI and a JSON CLI report.">
 <meta property="og:url" content="https://mikeholp87.github.io/defrag-hdd-linux/">
 <meta name="twitter:card" content="summary">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "ExtentPilot", "description": "ExtentPilot is a free, open source Linux tool that measures real file extents with FIEMAP and shows a file schematic and searchable table. Read-only, with a GUI and a JSON CLI report.", "url": "https://mikeholp87.github.io/defrag-hdd-linux/", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Linux", "programmingLanguage": "Rust", "codeRepository": "https://github.com/mikeholp87/defrag-hdd-linux", "license": "https://opensource.org/license/mit", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}, "author": {"@type": "Person", "name": "Mike Holp", "url": "https://www.ai-automation-station.com/about.html", "sameAs": ["https://github.com/mikeholp87", "https://www.ai-automation-station.com/"]}}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "ExtentPilot",
+  "description": "ExtentPilot is a free, open source Linux tool that measures real file extents with FIEMAP and shows a file schematic and searchable table. Read-only, with a GUI and a JSON CLI report.",
+  "url": "https://mikeholp87.github.io/defrag-hdd-linux/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Linux",
+  "programmingLanguage": "Rust",
+  "codeRepository": "https://github.com/mikeholp87/defrag-hdd-linux",
+  "license": "https://opensource.org/license/mit",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Mike Holp",
+    "url": "https://www.ai-automation-station.com/about.html",
+    "sameAs": [
+      "https://github.com/mikeholp87",
+      "https://www.ai-automation-station.com/"
+    ]
+  },
+  "dateModified": "2026-11-22"
+}
+</script>
 <style>
   :root { --bg: #fafafa; --fg: #1c1c22; --muted: #62626e; --card: #fff; --line: #e3e3ea; --accent: #3b5bdb; }
   @media (prefers-color-scheme: dark) { :root { --bg: #15151a; --fg: #ececf1; --muted: #9a9aa8; --card: #1e1e25; --line: #2e2e38; --accent: #8da9ff; } }
@@ -33,6 +61,9 @@
 <h1>ExtentPilot</h1>
 <p class="lead">A free, open source, read-only extent analyzer for Linux. It measures how files are laid out on disk using the FIEMAP ioctl and never modifies a file.</p>
 <p><a href="https://github.com/mikeholp87/defrag-hdd-linux">View the source on GitHub</a></p>
+<h2>What is ExtentPilot?</h2>
+<p>ExtentPilot is a free, open source, read-only file extent analyzer for Linux, published in the defrag-hdd-linux repository. It measures how files are laid out on disk using the FIEMAP ioctl and reports, for each file, its logical and allocated size, extent count, average and largest extent, and flags for shared or uncertain extents. A graphical interface shows a logical schematic with one cell per file plus a searchable table, and the command line produces a JSON report. The scanner walks directories with held file descriptors, rejects symlinks, special files and nested mounts, and counts hard-linked files once. It never writes to or modifies a file, and the GUI refuses to run as root. ExtentPilot is written in Rust and licensed MIT. It is a development build: defragmentation, TRIM, scheduling and privileged backends are not implemented, and the schematic is not a physical disk map.</p>
+<p><small>Updated November 22, 2026</small></p>
 <h2>Features</h2>
 <ul>
 <li>Real extent counts, average and largest extent, logical and allocated size per file</li>
