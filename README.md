@@ -1,5 +1,9 @@
 # ExtentPilot
 
+[![License](https://img.shields.io/github/license/mikeholp87/defrag-hdd-linux)](https://github.com/mikeholp87/defrag-hdd-linux/blob/main/LICENSE)
+
+**Website:** <https://mikeholp87.github.io/defrag-hdd-linux/>
+
 **Read-only Linux extent analysis** — a development build that scans files and directories,
 reports real FIEMAP measurements, and shows a logical file schematic plus a searchable
 measurement table. **No optimization is implemented yet.** Defragmentation, TRIM, history,
