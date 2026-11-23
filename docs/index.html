@@ -610,11 +610,52 @@
         }
       }
     
+      .hero { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+      .hero .lead { max-width: 46em; }
+      .demo-hint { margin: 0 0 12px; font-size: 14px; }
+
       .shot img.shot-small {
         max-height: 560px;
         object-fit: contain;
       }
 </style>
+    <style>#demo {
+
+      .win { --w-bg:#242424; --w-head:#303030; --w-ink:#f2f2f2; --w-dim:#a8a8a8; --w-field:#1f1f1f; --w-btn:#3c3c3c; --w-btn-h:#4a4a4a; --w-edge:#4a4a4a; --w-accent:#3584e4; --w-sel:#1a5fb4;
+        --w-teal:#2fbfae; --w-amber:#e5a93d; --w-purple:#a67be0; --w-gray:#8a8a8a; --w-bad:#e0556a; --w-ok:#4cc38a;
+        background:var(--w-bg); color:var(--w-ink); border:1px solid var(--w-edge); border-radius:12px; overflow:hidden; box-shadow:0 30px 70px -30px rgba(0,0,0,.55); font-size:14px; }
+      .win.light { --w-bg:#fafafa; --w-head:#ebebeb; --w-ink:#1e1e1e; --w-dim:#5e5e5e; --w-field:#fff; --w-btn:#ececec; --w-btn-h:#e0e0e0; --w-edge:#cfcfcf; --w-accent:#1c71d8; --w-sel:#3584e4; --w-teal:#118a7c; --w-amber:#a86f00; --w-purple:#7048b8; --w-gray:#6e6e6e; --w-bad:#b3223a; --w-ok:#18794e; }
+      .title { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:8px 14px; background:var(--w-head); border-bottom:1px solid var(--w-edge); }
+      .title strong { flex:1; text-align:center; }
+      .win select, .win input[type=text], .win input[type=search] { font:inherit; color:inherit; background:var(--w-field); border:1px solid var(--w-edge); border-radius:8px; padding:7px 10px; }
+      .win select { background:var(--w-btn); }
+      .win input:focus, .win select:focus, .win button:focus-visible { outline:2px solid var(--w-accent); outline-offset:1px; }
+      .win button { font:inherit; color:inherit; background:var(--w-btn); border:1px solid var(--w-edge); border-radius:8px; padding:7px 12px; cursor:pointer; }
+      .win button:hover { background:var(--w-btn-h); }
+      .win button.primary, .win button[aria-pressed=true], .win button[aria-current=page] { background:var(--w-sel); border-color:var(--w-sel); color:#fff; }
+      .win button:disabled { opacity:.5; cursor:not-allowed; }
+      .statusline { padding:8px 16px; color:var(--w-dim); border-top:1px solid var(--w-edge); min-height:36px; }
+      .bar { padding:10px 14px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; border-bottom:1px solid var(--w-edge); }
+      .bar input[type=text] { flex:1; min-width:200px; }
+      .seg { display:flex; gap:6px; flex-wrap:wrap; }
+      .muted { color:var(--w-dim); }
+      table { width:100%; border-collapse:collapse; font-size:13px; }
+      th, td { text-align:left; padding:6px 10px; border-bottom:1px solid var(--w-edge); }
+      th { color:var(--w-dim); font-weight:600; }
+      th { text-transform:none; letter-spacing:0; font-size:inherit; }
+      td, td:first-child { font-weight:inherit; color:inherit; }
+      td, th { background:transparent; }
+      .view { overflow-x:auto; }
+
+      .ep { padding:12px 16px 16px; display:grid; gap:10px; }
+      .cells { display:flex; flex-wrap:wrap; gap:4px; padding:8px 0; }
+      .cells button { width:16px; height:16px; padding:0; border-radius:3px; border:1px solid transparent; }
+      .cells .teal { background:var(--w-teal); } .cells .amber { background:var(--w-amber); } .cells .purple { background:var(--w-purple); } .cells .gray { background:var(--w-gray); }
+      .cells button.on { outline:2px solid var(--w-ink); outline-offset:1px; }
+      tr.hl { background:var(--w-btn); }
+      .legend span { margin-right:14px; } .legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; }
+
+}</style>
   </head>
   <body>
     <a class="skip" href="#content">Skip to content</a>
@@ -626,7 +667,6 @@
         <nav class="nav" aria-label="Main navigation">
           <a class="hide-sm" href="#features">Features</a>
           <a class="hide-sm" href="#screenshots">Screenshots</a>
-          <a class="hide-sm" href="./demo/">Demo</a>
           <a href="#install">Install</a>
           <a class="hide-sm" href="#faq">FAQ</a>
           <a class="pill" href="https://github.com/mikeholp87/defrag-hdd-linux">GitHub</a>
@@ -640,7 +680,6 @@
             <p class="lead">ExtentPilot measures how files sit on disk using the Linux FIEMAP ioctl. Scan a folder to get each file's extent count, largest extent and size, a one-cell-per-file schematic and a searchable table. It never modifies a file.</p>
             <div class="actions">
               <a class="button" href="#install">Run it from source</a>
-              <a class="button secondary" href="./demo/">Try the demo</a>
               <a class="button secondary" href="https://github.com/mikeholp87/defrag-hdd-linux">View source</a>
             </div>
             <ul class="badges" aria-label="Highlights">
@@ -651,13 +690,33 @@
               <li class="preview">Development build</li>
             </ul>
           </div>
-          <figure class="shot">
-            <picture>
-              <source type="image/webp" srcset="./assets/hero-640.webp 640w, ./assets/hero-1280.webp 1280w" sizes="(max-width: 760px) calc(100vw - 32px), 580px" />
-              <img src="./assets/hero-1280.webp" width="1280" height="740" fetchpriority="high" alt="ExtentPilot in a window after scanning a sample folder: a summary of files and extents, a colored schematic with one cell per file and a searchable table" />
-            </picture>
-            <figcaption>The GUI after a scan of a sample folder.</figcaption>
-          </figure>
+          <div id="demo">
+          <p class="fine demo-hint"><strong>Try it:</strong> pick a sample folder and press <strong>Start read-only scan</strong>, then click a cell in the schematic or search the table.</p>
+          <div class="win" id="win" role="application" aria-label="ExtentPilot demo">
+            <div class="title">
+              <span aria-hidden="true">☰</span><strong>ExtentPilot</strong>
+              <label style="position:absolute;left:-9999px" for="theme">Theme</label>
+              <select id="theme"><option value="system">System theme</option><option value="light">Light</option><option value="dark">Dark</option></select>
+            </div>
+
+        <div class="ep">
+          <p class="muted" style="margin:0">Read-only inspection · No optimization operations are enabled</p>
+          <div class="bar" style="padding:0;border:0">
+            <label for="dir" class="muted">Analyze files</label>
+            <select id="dir" aria-label="Sample folder"><option value="projects">/home/demo/Projects</option><option value="media">/home/demo/Media</option><option value="logs">/var/log/demo</option></select>
+            <button type="button" id="scan" class="primary">Start read-only scan</button>
+          </div>
+          <div id="summary" class="muted">Symlinks and nested mounts are excluded. Press the button to scan the sample folder.</div>
+          <div class="legend muted" id="legend" hidden><span><i style="background:var(--w-teal)"></i>zero or one extent</span><span><i style="background:var(--w-amber)"></i>multiple extents</span><span><i style="background:var(--w-purple)"></i>shared indicator</span><span><i style="background:var(--w-gray)"></i>uncertain</span></div>
+          <div class="cells" id="cells" role="list" aria-label="Logical schematic, one cell per file"></div>
+          <input type="search" id="q" placeholder="Search path" aria-label="Search path" hidden />
+          <div style="overflow-x:auto"><table id="tbl" hidden><thead><tr><th>Path</th><th>Bytes</th><th>Extents</th><th>Avg extent</th><th>Measurement</th></tr></thead><tbody></tbody></table></div>
+        </div>
+        <div class="statusline" id="status" role="status" aria-live="polite">Defragmentation, TRIM, history and scheduling are not available. This demo uses sample data.</div>
+
+          </div>
+          <p class="fine">Browser demo with pretend files. It cannot read your disk or call FIEMAP, and nothing leaves this page.</p>
+        </div>
         </section>
 
         <section id="features" class="features" aria-labelledby="features-title">
@@ -882,6 +941,58 @@ cargo run --release -- analyze ~/Documents --json &gt; report.json</code></pre>
         box.appendChild(button);
       });
     </script>
+    <script>(() => {
+"use strict";
+const $ = (id) => document.getElementById(id);
+$("theme").addEventListener("change", () => {
+  const v = $("theme").value;
+  const dark = v === "dark" || (v === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+  $("win").classList.toggle("light", !dark);
+});
+$("theme").dispatchEvent(new Event("change"));
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => $("theme").dispatchEvent(new Event("change")));
+
+const mk = (p, size, ext, flag) => ({ p, size, ext, flag: flag || "complete", avg: Math.round(size / Math.max(ext, 1)) });
+const DATA = {
+  projects: [
+    ...[0,1,2,3,4,5].map((i) => mk("/home/demo/Projects/data/dataset-" + i + ".bin", 10485760, i === 0 ? 7 : 8)),
+    ...[0,1,2,3,4,5,6].map((i) => mk("/home/demo/Projects/docs/note-" + i + ".txt", 4096 * (1 + i % 5), 1)),
+    mk("/home/demo/Projects/app/build.tar", 52428800, 1), mk("/home/demo/Projects/app/cache.db", 20971520, 3, "shared"), mk("/home/demo/Projects/app/new.log", 8192, 1, "incomplete"),
+  ],
+  media: [
+    ...[0,1,2,3,4].map((i) => mk("/home/demo/Media/clip-" + i + ".mp4", 52428800, [11, 12, 10, 8, 12][i])),
+    mk("/home/demo/Media/backdrop.png", 3145728, 1), mk("/home/demo/Media/podcast.flac", 31457280, 2), mk("/home/demo/Media/intro.mov", 83886080, 4, "shared"),
+  ],
+  logs: [...[0,1,2,3,4,5,6,7].map((i) => mk("/var/log/demo/app-" + i + ".log", 7864320, 8)), mk("/var/log/demo/current.log", 12288, 1, "incomplete"), mk("/var/log/demo/old.log.gz", 524288, 1)],
+};
+const cls = (f) => f.flag === "incomplete" ? "gray" : f.flag === "shared" ? "purple" : f.ext > 1 ? "amber" : "teal";
+let rows = [];
+function table() {
+  const q = $("q").value.toLowerCase();
+  const list = rows.filter((f) => f.p.toLowerCase().includes(q));
+  $("tbl").querySelector("tbody").innerHTML = list.map((f) => `<tr data-p="${f.p}"><td>${f.p}</td><td>${f.size}</td><td>${f.ext}</td><td>${f.avg}</td><td>${f.flag}</td></tr>`).join("");
+  $("status").textContent = `Showing ${list.length} of ${rows.length} retained rows. Reported extents are metadata observations, not a performance score.`;
+}
+$("q").addEventListener("input", table);
+$("cells").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  document.querySelectorAll(".cells .on").forEach((x) => x.classList.remove("on")); b.classList.add("on");
+  document.querySelectorAll("tr.hl").forEach((x) => x.classList.remove("hl"));
+  const tr = [...$("tbl").querySelectorAll("tbody tr")].find((r) => r.dataset.p === b.dataset.p);
+  if (tr) { tr.classList.add("hl"); tr.scrollIntoView({ block: "nearest" }); } else { $("q").value = ""; table(); }
+});
+$("scan").addEventListener("click", async () => {
+  $("scan").disabled = true; rows = [...DATA[$("dir").value]];
+  $("status").textContent = "Scanning (read-only)…"; await new Promise((r) => setTimeout(r, 700));
+  const total = rows.reduce((s, f) => s + f.size, 0), ext = rows.reduce((s, f) => s + f.ext, 0);
+  const ok = rows.filter((f) => f.flag === "complete" || f.flag === "shared").length;
+  $("summary").innerHTML = `${rows.length} examined · ${ok} complete · 0 skipped · 0 duplicate links<br>${ext} reported extents · ${total} apparent bytes · cancelled: false · resource limit reached: false<br>Logical schematic: one cell per retained file, not physical disk blocks.`;
+  $("legend").hidden = false; $("q").hidden = false; $("tbl").hidden = false;
+  $("cells").innerHTML = rows.map((f) => `<button type="button" class="${cls(f)}" data-p="${f.p}" role="listitem" aria-label="${f.p}: ${f.ext} extents" title="${f.p} · ${f.ext} extents"></button>`).join("");
+  table(); $("scan").disabled = false;
+});
+
+})();</script>
     <style data-lightbox>
   .lb-trigger { cursor: zoom-in; }
   .lb-trigger:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
