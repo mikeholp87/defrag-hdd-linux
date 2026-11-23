@@ -1,28 +1,43 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ExtentPilot: read-only Linux file extent and fragmentation analyzer</title>
-<meta name="description" content="ExtentPilot is a free, read-only Linux file extent analyzer using FIEMAP, with a GUI and JSON CLI. Development build, no defragmentation yet.">
-<link rel="canonical" href="https://mikeholp87.github.io/defrag-hdd-linux/">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ExtentPilot: read-only Linux file extent and fragmentation analyzer">
-<meta property="og:description" content="ExtentPilot is a free, open source Linux tool that measures real file extents with FIEMAP and shows a file schematic and searchable table. Read-only, with a GUI and a JSON CLI report.">
-<meta property="og:url" content="https://mikeholp87.github.io/defrag-hdd-linux/">
-<meta name="twitter:card" content="summary">
-<script type="application/ld+json">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#edeff5" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1117" media="(prefers-color-scheme: dark)" />
+    <title>ExtentPilot: read-only Linux file extent and fragmentation analyzer</title>
+    <meta name="description" content="ExtentPilot is a free, open source, read-only Linux file extent analyzer in Rust. It measures real FIEMAP extents and shows a file schematic and a searchable table, with a GUI and a JSON CLI." />
+    <link rel="canonical" href="https://mikeholp87.github.io/defrag-hdd-linux/" />
+    <link rel="icon" href="./extentpilot-icon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ExtentPilot" />
+    <meta property="og:title" content="ExtentPilot: read-only Linux file extent and fragmentation analyzer" />
+    <meta property="og:description" content="Measure real file extents with FIEMAP, see a logical schematic and a searchable table, or export a JSON report. Free, open source, read-only." />
+    <meta property="og:url" content="https://mikeholp87.github.io/defrag-hdd-linux/" />
+    <meta property="og:image" content="https://mikeholp87.github.io/defrag-hdd-linux/assets/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="ExtentPilot showing a scan of a sample folder with a schematic of files and a table of extent counts" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ExtentPilot: read-only Linux file extent and fragmentation analyzer" />
+    <meta name="twitter:description" content="Measure real file extents with FIEMAP, see a logical schematic and a searchable table, or export a JSON report. Free, open source, read-only." />
+    <meta name="twitter:image" content="https://mikeholp87.github.io/defrag-hdd-linux/assets/og.png" />
+    <meta name="twitter:image:alt" content="ExtentPilot showing a scan of a sample folder with a schematic of files and a table of extent counts" />
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "ExtentPilot",
-  "description": "ExtentPilot is a free, open source Linux tool that measures real file extents with FIEMAP and shows a file schematic and searchable table. Read-only, with a GUI and a JSON CLI report.",
-  "url": "https://mikeholp87.github.io/defrag-hdd-linux/",
+  "description": "A free, open source, read-only file extent analyzer for Linux that measures real FIEMAP extents, with a GUI and a JSON CLI.",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Linux",
   "programmingLanguage": "Rust",
+  "url": "https://mikeholp87.github.io/defrag-hdd-linux/",
   "codeRepository": "https://github.com/mikeholp87/defrag-hdd-linux",
+  "downloadUrl": "https://github.com/mikeholp87/defrag-hdd-linux",
   "license": "https://opensource.org/license/mit",
+  "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -37,55 +52,833 @@
       "https://www.ai-automation-station.com/"
     ]
   },
-  "dateModified": "2026-11-22"
+  "dateModified": "2026-11-23"
 }
-</script>
-<style>
-  :root { --bg: #fafafa; --fg: #1c1c22; --muted: #62626e; --card: #fff; --line: #e3e3ea; --accent: #3b5bdb; }
-  @media (prefers-color-scheme: dark) { :root { --bg: #15151a; --fg: #ececf1; --muted: #9a9aa8; --card: #1e1e25; --line: #2e2e38; --accent: #8da9ff; } }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, sans-serif; }
-  main { max-width: 46rem; margin: 0 auto; padding: 3rem 1rem 2rem; }
-  h1 { margin: 0 0 .5rem; font-size: 2.2rem; }
-  h2 { margin-top: 2.2rem; }
-  a { color: var(--accent); }
-  .lead { font-size: 1.15rem; color: var(--muted); }
-  pre { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 1rem; overflow-x: auto; }
-  .note { border-left: 3px solid var(--accent); padding: .1rem 1rem; color: var(--muted); }
-  footer { max-width: 46rem; margin: 0 auto; padding: 1rem 1rem 3rem; color: var(--muted); font-size: .9rem; border-top: 1px solid var(--line); }
-  footer a { margin-right: 1rem; }
+    </script>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #edeff5;
+        --paper: #fff;
+        --soft: #f6f7fb;
+        --ink: #14161f;
+        --muted: #4b5167;
+        --line: #d9ddea;
+        --blue: #4350e0;
+        --blue-ink: #3641c4;
+        --on-blue: #fff;
+        --green: #066a4a;
+        --amber: #8a5a00;
+        --code-bg: #171a26;
+        --code-ink: #e8eaf4;
+        --shadow: 0 24px 60px -28px rgba(20, 22, 31, 0.35);
+        font-family:
+          Inter,
+          "Segoe UI",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        color: var(--ink);
+        background: var(--bg);
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        scroll-behavior: smooth;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0f1117;
+          --paper: #171a23;
+          --soft: #1b1f2a;
+          --ink: #eef0f7;
+          --muted: #a9afc4;
+          --line: #2a2f3d;
+          --blue: #8b95ff;
+          --blue-ink: #a3abff;
+          --on-blue: #0f1117;
+          --green: #4cd3a1;
+          --amber: #f2c46d;
+          --code-bg: #0a0c12;
+          --shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.8);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        :root {
+          scroll-behavior: auto;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-width: 320px;
+      }
+      a {
+        color: var(--blue-ink);
+        text-underline-offset: 0.2em;
+      }
+      a:focus-visible,
+      button:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid var(--blue);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 12px;
+        top: -60px;
+        z-index: 10;
+        padding: 10px 14px;
+        border-radius: 8px;
+        background: var(--blue);
+        color: var(--on-blue);
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .skip:focus {
+        top: 12px;
+      }
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+      .wrap {
+        width: min(1080px, calc(100% - 40px));
+        margin: auto;
+      }
+      header {
+        height: 84px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--ink);
+        font-size: 20px;
+        font-weight: 750;
+        letter-spacing: -0.03em;
+        text-decoration: none;
+      }
+      .brand img {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .nav a {
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .nav a:hover {
+        color: var(--blue-ink);
+        text-decoration: underline;
+      }
+      .nav .pill {
+        padding: 8px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--paper);
+      }
+      main {
+        padding-top: 56px;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: 56px;
+        align-items: center;
+        padding: 24px 0 72px;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 18px;
+        color: var(--green);
+        font-size: 13px;
+        font-weight: 750;
+      }
+      .eyebrow::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+      h1 {
+        margin: 0;
+        font-size: clamp(40px, 5.6vw, 68px);
+        line-height: 1;
+        letter-spacing: -0.055em;
+      }
+      .lead {
+        max-width: 34em;
+        margin: 22px 0 0;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.65;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 28px;
+      }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        min-height: 46px;
+        padding: 0 20px;
+        border: 1px solid var(--blue);
+        border-radius: 8px;
+        background: var(--blue);
+        color: var(--on-blue);
+        font-size: 15px;
+        font-weight: 750;
+        text-decoration: none;
+      }
+      .button:hover {
+        filter: brightness(1.08);
+      }
+      .button.secondary {
+        border-color: var(--line);
+        background: var(--paper);
+        color: var(--ink);
+      }
+      .badges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 26px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+      .badges li {
+        padding: 5px 11px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--paper);
+        color: var(--muted);
+        font-size: 12.5px;
+        font-weight: 650;
+      }
+      .badges .preview {
+        color: var(--amber);
+      }
+      .shot {
+        margin: 0;
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--paper);
+        box-shadow: var(--shadow);
+      }
+      .shot figcaption {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+      section {
+        scroll-margin-top: 24px;
+      }
+      .section-head {
+        max-width: 640px;
+        margin-bottom: 32px;
+      }
+      h2 {
+        margin: 0;
+        font-size: clamp(26px, 3.2vw, 36px);
+        letter-spacing: -0.04em;
+        line-height: 1.1;
+      }
+      .section-head p {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      .features,
+      .shots,
+      .platforms,
+      .faq,
+      .safety {
+        padding: 72px 0 0;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .card {
+        padding: 22px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--paper);
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+        letter-spacing: -0.02em;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .card .tag {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: var(--soft);
+        color: var(--muted);
+        font-size: 11.5px;
+        font-weight: 700;
+      }
+      .shots-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+      }
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--paper);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      th,
+      td {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      td {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      td:first-child {
+        color: var(--ink);
+        font-weight: 650;
+      }
+      .install {
+        margin-top: 72px;
+        padding: 40px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--paper);
+      }
+      .install > .section-head {
+        margin-bottom: 24px;
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 22px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: step;
+      }
+      .steps > li {
+        position: relative;
+        padding-left: 46px;
+        counter-increment: step;
+      }
+      .steps > li::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: -2px;
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--blue);
+        color: var(--on-blue);
+        font-size: 14px;
+        font-weight: 800;
+      }
+      .steps h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+        letter-spacing: -0.02em;
+      }
+      .steps p {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .fp {
+        display: block;
+        margin: 0 0 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--soft);
+        color: var(--ink);
+        font:
+          600 13px/1.5 ui-monospace,
+          "SFMono-Regular",
+          Menlo,
+          Consolas,
+          monospace;
+        overflow-wrap: anywhere;
+      }
+      .codebox {
+        position: relative;
+      }
+      .code {
+        margin: 0;
+        padding: 20px 76px 20px 20px;
+        overflow-x: auto;
+        border-radius: 10px;
+        background: var(--code-bg);
+        color: var(--code-ink);
+        font:
+          13px/1.7 ui-monospace,
+          "SFMono-Regular",
+          Menlo,
+          Consolas,
+          monospace;
+        tab-size: 2;
+      }
+      .copy {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        min-height: 32px;
+        padding: 0 12px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #e8eaf4;
+        font: 700 12px/1 inherit;
+        cursor: pointer;
+      }
+      .copy:hover {
+        background: rgba(255, 255, 255, 0.16);
+      }
+      .fine {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .fine code,
+      .steps p code,
+      .card p code,
+      details p code {
+        font:
+          12.5px ui-monospace,
+          "SFMono-Regular",
+          Menlo,
+          Consolas,
+          monospace;
+      }
+      .safety-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      details {
+        border-bottom: 1px solid var(--line);
+      }
+      details:first-of-type {
+        border-top: 1px solid var(--line);
+      }
+      summary {
+        padding: 18px 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 650;
+        letter-spacing: -0.01em;
+      }
+      details p {
+        max-width: 70ch;
+        margin: 0 0 18px;
+        padding: 0 4px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.7;
+      }
+      footer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 24px;
+        margin-top: 80px;
+        padding: 24px 0 36px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 13px;
+      }
+      footer nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 20px;
+      }
+      @media (max-width: 960px) {
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 760px) {
+        .wrap {
+          width: min(100% - 32px, 540px);
+        }
+        header {
+          height: 70px;
+        }
+        .nav {
+          gap: 14px;
+          font-size: 13px;
+        }
+        .nav .hide-sm {
+          display: none;
+        }
+        main {
+          padding-top: 32px;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 32px;
+          padding: 12px 0 48px;
+        }
+        .features,
+        .shots,
+        .platforms,
+        .faq,
+        .safety {
+          padding-top: 52px;
+        }
+        .grid,
+        .shots-grid,
+        .safety-grid {
+          grid-template-columns: 1fr;
+        }
+        .install {
+          margin-top: 52px;
+          padding: 24px 18px;
+        }
+        .steps > li {
+          padding-left: 0;
+          padding-top: 40px;
+        }
+        .steps > li::before {
+          top: 0;
+        }
+        .code {
+          font-size: 12px;
+        }
+      }
+    
+      .shot img.shot-small {
+        max-height: 560px;
+        object-fit: contain;
+      }
 </style>
-</head>
-<body>
-<main>
-<h1>ExtentPilot</h1>
-<p class="lead">A free, open source, read-only extent analyzer for Linux. It measures how files are laid out on disk using the FIEMAP ioctl and never modifies a file.</p>
-<p><a href="https://github.com/mikeholp87/defrag-hdd-linux">View the source on GitHub</a></p>
-<h2>What is ExtentPilot?</h2>
-<p>ExtentPilot is a free, open source, read-only file extent analyzer for Linux, published in the defrag-hdd-linux repository. It measures how files are laid out on disk using the FIEMAP ioctl and reports, for each file, its logical and allocated size, extent count, average and largest extent, and flags for shared or uncertain extents. A graphical interface shows a logical schematic with one cell per file plus a searchable table, and the command line produces a JSON report. The scanner walks directories with held file descriptors, rejects symlinks, special files and nested mounts, and counts hard-linked files once. It never writes to or modifies a file, and the GUI refuses to run as root. ExtentPilot is written in Rust and licensed MIT. It is a development build: defragmentation, TRIM, scheduling and privileged backends are not implemented, and the schematic is not a physical disk map.</p>
-<p><small>Updated November 22, 2026</small></p>
-<h2>Features</h2>
-<ul>
-<li>Real extent counts, average and largest extent, logical and allocated size per file</li>
-<li>Flags for shared and uncertain extents, with a completeness report for each scan</li>
-<li>Directory walk that rejects symlinks, special files and nested mounts, and deduplicates hard links</li>
-<li>Logical file schematic and a searchable table in the GUI, plus a JSON report from the CLI</li>
-<li>Cooperative cancellation; partial results stay visible</li>
-</ul>
-<h2>Run it</h2>
-<pre>git clone https://github.com/mikeholp87/defrag-hdd-linux
-cd defrag-hdd-linux
-cargo run                          # GUI
-cargo run -- analyze ~/Documents --json &gt; report.json</pre>
-<p>The GUI refuses to run as root. JSON reports contain filenames, so store them privately; file contents are never exported.</p>
-<h2>Status</h2>
-<p class="note">Development build. Analysis only: defragmentation, TRIM, history, scheduling and privileged backends are not implemented, and the schematic is a logical view, not a physical disk map.</p>
-<h2>Related</h2>
-<p>Other projects by the same author: <a href="https://mikeholp87.github.io/Tasky/">Tasky</a>, <a href="https://mikeholp87.github.io/Luma-Launcher/">Luma Launcher</a>, <a href="https://mikeholp87.github.io/Restic-Studio/">Restic Studio</a> and <a href="https://mikeholp87.github.io/">all projects</a>.</p>
-</main>
-<footer>
-<p>ExtentPilot is free and open source under the MIT license. Built by Mike Holp.</p>
-<a href="https://github.com/mikeholp87/defrag-hdd-linux">GitHub</a><a href="https://github.com/mikeholp87/defrag-hdd-linux/issues">Issues</a><a href="https://github.com/mikeholp87/defrag-hdd-linux/blob/main/LICENSE">License</a><a href="https://www.ai-automation-station.com/guides.html">Build guides</a><a href="https://www.ai-automation-station.com/">AI Automation Station</a>
-</footer>
-</body>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <div class="wrap">
+      <header>
+        <a class="brand" href="./" aria-label="ExtentPilot home"
+          ><img src="./extentpilot-icon.svg" alt="" width="36" height="36" />ExtentPilot</a
+        >
+        <nav class="nav" aria-label="Main navigation">
+          <a class="hide-sm" href="#features">Features</a>
+          <a class="hide-sm" href="#screenshots">Screenshots</a>
+          <a href="#install">Install</a>
+          <a class="hide-sm" href="#faq">FAQ</a>
+          <a class="pill" href="https://github.com/mikeholp87/defrag-hdd-linux">GitHub</a>
+        </nav>
+      </header>
+      <main id="content">
+        <section class="hero" aria-labelledby="hero-title">
+          <div>
+            <div class="eyebrow">Free and open source extent analyzer for Linux</div>
+            <h1 id="hero-title">See how your files are really laid out.</h1>
+            <p class="lead">ExtentPilot measures how files sit on disk using the Linux FIEMAP ioctl. Scan a folder to get each file's extent count, largest extent and size, a one-cell-per-file schematic and a searchable table. It never modifies a file.</p>
+            <div class="actions">
+              <a class="button" href="#install">Run it from source</a>
+              <a class="button secondary" href="https://github.com/mikeholp87/defrag-hdd-linux">View source</a>
+            </div>
+            <ul class="badges" aria-label="Highlights">
+              <li>MIT licensed</li>
+              <li>Read-only</li>
+              <li>Rust and egui</li>
+              <li>JSON CLI report</li>
+              <li class="preview">Development build</li>
+            </ul>
+          </div>
+          <figure class="shot">
+            <picture>
+              <source type="image/webp" srcset="./assets/hero-640.webp 640w, ./assets/hero-1280.webp 1280w" sizes="(max-width: 760px) calc(100vw - 32px), 580px" />
+              <img src="./assets/hero-1280.webp" width="1280" height="740" fetchpriority="high" alt="ExtentPilot in a window after scanning a sample folder: a summary of files and extents, a colored schematic with one cell per file and a searchable table" />
+            </picture>
+            <figcaption>The GUI after a scan of a sample folder.</figcaption>
+          </figure>
+        </section>
+
+        <section id="features" class="features" aria-labelledby="features-title">
+          <div class="section-head">
+            <h2 id="features-title">Everything you need to read extent layout</h2>
+            <p>ExtentPilot reports what the kernel says about each file and is careful not to claim more. Nothing it does writes to your files.</p>
+          </div>
+          <div class="grid">
+            <article class="card">
+              <h3>Real extent counts</h3>
+              <p>Each file's extent count, average extent, largest extent, logical size and allocated size, read through the FIEMAP ioctl.</p>
+            </article>
+            <article class="card">
+              <h3>Read-only by design</h3>
+              <p>Scans never create, move or change a file. The GUI refuses to run as root, so a scan only sees what your user can see.</p>
+            </article>
+            <article class="card">
+              <h3>Safe directory walk</h3>
+              <p>Walks with held descriptors and openat2. Symlinks, special files and nested mounts, including bind mounts, are rejected.</p>
+            </article>
+            <article class="card">
+              <h3>Shared and uncertain flags</h3>
+              <p>Shared extents and measurements the kernel could not vouch for are flagged, with a completeness note for each scan.</p>
+            </article>
+            <article class="card">
+              <h3>Logical schematic</h3>
+              <p>One cell per file, colored by extent state. It is a logical view of your files, not a physical map of the disk.</p>
+            </article>
+            <article class="card">
+              <h3>Searchable table</h3>
+              <p>A virtualized table of up to 5,000 retained rows that you can search and sort, even for large trees.</p>
+            </article>
+            <article class="card">
+              <h3>JSON report</h3>
+              <p>The command line writes a full JSON report with per-file rows and raw filename bytes.</p>
+              <span class="tag">extentpilot analyze PATH --json</span>
+            </article>
+            <article class="card">
+              <h3>Cancel any time</h3>
+              <p>Cancel between entries and ioctl batches. Partial results stay visible. Hard-linked files count once.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="screenshots" class="shots" aria-labelledby="shots-title">
+          <div class="section-head">
+            <h2 id="shots-title">Schematic and table</h2>
+            <p>Gray marks uncertain cells, purple a shared extent, amber more than one extent and teal zero or one extent.</p>
+          </div>
+          <div class="shots-grid">
+            <figure class="shot">
+              <picture>
+              <source type="image/webp" srcset="./assets/shot-a-640.webp 640w, ./assets/shot-a-1280.webp 1280w" sizes="(max-width: 760px) calc(100vw - 32px), 528px" />
+              <img src="./assets/shot-a-640.webp" width="640" height="335" loading="lazy" alt="ExtentPilot window with a scan summary, schematic and table" />
+            </picture>
+              <figcaption>The GUI with a scan result and schematic (sample data).</figcaption>
+            </figure>
+            <figure class="shot">
+              <picture>
+              <source type="image/webp" srcset="./assets/shot-b-640.webp 640w, ./assets/shot-b-1280.webp 1280w" sizes="(max-width: 760px) calc(100vw - 32px), 528px" />
+              <img src="./assets/shot-b-640.webp" width="640" height="335" loading="lazy" alt="ExtentPilot window with the table filtered by a search term" />
+            </picture>
+              <figcaption>Searching the measurement table (sample data).</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section id="platforms" class="platforms" aria-labelledby="platforms-title">
+          <div class="section-head">
+            <h2 id="platforms-title">Supported platforms and limits</h2>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Area</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Linux 5.6 or newer</td>
+                  <td>Needs openat2 with RESOLVE_BENEATH and RESOLVE_NO_XDEV, a mounted procfs and a Wayland or X11 session for the GUI.</td>
+                </tr>
+                <tr>
+                  <td>Filesystems</td>
+                  <td>Any filesystem that implements FIEMAP, such as ext4. Some, such as tmpfs, reject it; that is reported as unavailable, never as zero fragmentation.</td>
+                </tr>
+                <tr>
+                  <td>Packaging</td>
+                  <td>Not packaged yet. Build from source with Rust 1.95 or newer.</td>
+                </tr>
+                <tr>
+                  <td>Scope</td>
+                  <td>Analysis only. No defragmentation, TRIM, history or scheduling is implemented.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="install" class="install" aria-labelledby="install-title">
+          <div class="section-head">
+            <h2 id="install-title">Run it from source</h2>
+            <p>ExtentPilot is a development build with no package yet. You need Rust 1.95 or newer and a Linux desktop session.</p>
+          </div>
+          <ol class="steps">
+            <li>
+              <h3>Get the source</h3>
+              <div class="codebox">
+                <pre class="code" tabindex="0"><code>sudo apt install git build-essential
+git clone https://github.com/mikeholp87/defrag-hdd-linux
+cd defrag-hdd-linux</code></pre>
+              </div>
+            </li>
+            <li>
+              <h3>Open the GUI</h3>
+              <div class="codebox">
+                <pre class="code" tabindex="0"><code>cargo run --release</code></pre>
+              </div>
+              <p class="fine">Enter a folder and start a scan. The GUI refuses to run as root.</p>
+            </li>
+            <li>
+              <h3>Or use the command line</h3>
+              <div class="codebox">
+                <pre class="code" tabindex="0"><code>cargo run --release -- drives
+cargo run --release -- analyze ~/Documents
+cargo run --release -- analyze ~/Documents --json &gt; report.json</code></pre>
+              </div>
+              <p class="fine">JSON reports contain filenames, so store them privately. File contents are never exported.</p>
+            </li>
+          </ol>
+        </section>
+
+        <section id="safety" class="safety" aria-labelledby="safety-title">
+          <div class="section-head">
+            <h2 id="safety-title">Read-only and honest</h2>
+          </div>
+          <div class="safety-grid">
+            <article class="card">
+              <h3>Never modifies files</h3>
+              <p>Scanning uses read-only ioctls on descriptors it holds. No file is created, moved, truncated or rewritten.</p>
+            </article>
+            <article class="card">
+              <h3>Says what it cannot know</h3>
+              <p>Missing shared flags do not prove an extent is unshared, and a scan is not an atomic snapshot. The report says so.</p>
+            </article>
+            <article class="card">
+              <h3>Bounded work</h3>
+              <p>Scans stop at 100,000 entries and 128 directory levels, and totals still cover every measured file.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="faq" class="faq" aria-labelledby="faq-title">
+          <div class="section-head">
+            <h2 id="faq-title">Questions</h2>
+          </div>
+          <details>
+            <summary>Does ExtentPilot defragment my files?</summary>
+            <p>No. This build only analyzes. Defragmentation, TRIM, scheduling and privileged backends are not implemented, and the app makes no claim that fewer extents means faster reads.</p>
+          </details>
+          <details>
+            <summary>Is the schematic a map of my disk?</summary>
+            <p>No. It has one cell per retained file, in scan order, colored by extent state. Physical addresses never drive any raw I/O and are not shown as a disk layout.</p>
+          </details>
+          <details>
+            <summary>Why does a scan say a measurement is unavailable?</summary>
+            <p>The filesystem or permissions did not allow FIEMAP for that file. Memory filesystems such as tmpfs reject it with EOPNOTSUPP, and unavailable is not the same as unfragmented.</p>
+          </details>
+          <details>
+            <summary>Why will it not run as root?</summary>
+            <p>Scans use your user's permissions on purpose, so a scan cannot reach files you could not already read.</p>
+          </details>
+          <details>
+            <summary>Where do I report a bug?</summary>
+            <p>Open an issue on <a href="https://github.com/mikeholp87/defrag-hdd-linux/issues">GitHub</a>.</p>
+          </details>
+        </section>
+      </main>
+      <footer>
+        <span>ExtentPilot is free and open source under the MIT license. Built by Mike Holp.</span>
+        <nav aria-label="Footer">
+          <a href="https://github.com/mikeholp87/defrag-hdd-linux">GitHub</a>
+          <a href="https://github.com/mikeholp87/defrag-hdd-linux/issues">Issues</a>
+          <a href="https://github.com/mikeholp87/defrag-hdd-linux/blob/main/LICENSE">License</a>
+          <a href="https://github.com/mikeholp87/defrag-hdd-linux/blob/main/docs/architecture.md">Architecture</a>
+          <a href="https://github.com/mikeholp87/defrag-hdd-linux/blob/main/docs/limitations.md">Limitations</a>
+          <a href="https://github.com/mikeholp87/defrag-hdd-linux/blob/main/docs/testing.md">Testing</a>
+          <a href="https://www.ai-automation-station.com/guides.html">Build guides</a>
+          <a href="https://www.ai-automation-station.com/">AI Automation Station</a>
+        </nav>
+        <nav aria-label="Other projects">
+          <a href="https://mikeholp87.github.io/Tasky/">Tasky</a>
+          <a href="https://mikeholp87.github.io/Luma-Launcher/">Luma Launcher</a>
+          <a href="https://mikeholp87.github.io/Restic-Studio/">Restic Studio</a>
+          <a href="https://mikeholp87.github.io/">All projects</a>
+        </nav>
+      </footer>
+    </div>
+    <p id="copy-status" class="visually-hidden" role="status" aria-live="polite"></p>
+    <script>
+      var copyStatus = document.getElementById("copy-status");
+      document.querySelectorAll(".codebox").forEach(function (box) {
+        var code = box.querySelector("code");
+        if (!code || !navigator.clipboard) return;
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "copy";
+        button.textContent = "Copy";
+        button.setAttribute("aria-label", "Copy commands to clipboard");
+        button.addEventListener("click", function () {
+          navigator.clipboard.writeText(code.textContent).then(function () {
+            button.textContent = "Copied";
+            copyStatus.textContent = "Commands copied to clipboard";
+            setTimeout(function () {
+              button.textContent = "Copy";
+              copyStatus.textContent = "";
+            }, 1800);
+          });
+        });
+        box.appendChild(button);
+      });
+    </script>
+  </body>
 </html>
