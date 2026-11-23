@@ -614,18 +614,7 @@
         max-height: 560px;
         object-fit: contain;
       }
-
-.sponsor-heart { color: #bf3989; }
-@media (prefers-color-scheme: dark) { .sponsor-heart { color: #db61a2; } }
-.pill.sponsor { display: inline-flex; align-items: center; gap: 6px; }
-.pill.sponsor:hover { border-color: #bf3989; }
-.support { margin: 72px 0 24px; padding: 36px 28px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); text-align: center; }
-.support h2 { margin: 0 0 10px; }
-.support p { max-width: 58ch; margin: 0 auto 22px; color: var(--muted); }
-.support p.small { margin: 16px auto 0; font-size: 14px; }
-.button.sponsor-cta { gap: 8px; }
-@media (max-width: 480px) { header { flex-wrap: wrap; row-gap: 10px; } .nav { flex-wrap: wrap; gap: 8px; } .nav .pill { padding: 7px 11px; } .nav a { font-size: 14px; } .support { padding: 28px 18px; } }
-    </style>
+</style>
   </head>
   <body>
     <a class="skip" href="#content">Skip to content</a>
@@ -637,10 +626,10 @@
         <nav class="nav" aria-label="Main navigation">
           <a class="hide-sm" href="#features">Features</a>
           <a class="hide-sm" href="#screenshots">Screenshots</a>
+          <a class="hide-sm" href="./demo/">Demo</a>
           <a href="#install">Install</a>
           <a class="hide-sm" href="#faq">FAQ</a>
           <a class="pill" href="https://github.com/mikeholp87/defrag-hdd-linux">GitHub</a>
-        <a class="pill sponsor" href="https://github.com/sponsors/mikeholp87"><span class="sponsor-heart" aria-hidden="true">♥</span> Sponsor</a>
         </nav>
       </header>
       <main id="content">
@@ -651,6 +640,7 @@
             <p class="lead">ExtentPilot measures how files sit on disk using the Linux FIEMAP ioctl. Scan a folder to get each file's extent count, largest extent and size, a one-cell-per-file schematic and a searchable table. It never modifies a file.</p>
             <div class="actions">
               <a class="button" href="#install">Run it from source</a>
+              <a class="button secondary" href="./demo/">Try the demo</a>
               <a class="button secondary" href="https://github.com/mikeholp87/defrag-hdd-linux">View source</a>
             </div>
             <ul class="badges" aria-label="Highlights">
@@ -847,19 +837,11 @@ cargo run --release -- analyze ~/Documents --json &gt; report.json</code></pre>
             <p>Open an issue on <a href="https://github.com/mikeholp87/defrag-hdd-linux/issues">GitHub</a>.</p>
           </details>
         </section>
-      
-      <section id="support" class="support" aria-labelledby="support-title">
-        <h2 id="support-title"><span class="sponsor-heart" aria-hidden="true">♥</span> Support ExtentPilot</h2>
-        <p>ExtentPilot is free and open source. If it saves you time, sponsoring helps me keep fixing bugs, answering issues and shipping updates. Every bit helps, and you can stop any time.</p>
-        <a class="button secondary sponsor-cta" href="https://github.com/sponsors/mikeholp87"><span class="sponsor-heart" aria-hidden="true">♥</span> Sponsor on GitHub</a>
-        <p class="small">Can't sponsor? A star on <a href="https://github.com/mikeholp87/defrag-hdd-linux">GitHub</a> also helps other people find it.</p>
-      </section>
       </main>
       <footer>
         <span>ExtentPilot is free and open source under the MIT license. Built by Mike Holp.</span>
         <nav aria-label="Footer">
           <a href="https://github.com/mikeholp87/defrag-hdd-linux">GitHub</a>
-          <a href="https://github.com/sponsors/mikeholp87"><span class="sponsor-heart" aria-hidden="true">♥</span> Sponsor</a>
           <a href="https://github.com/mikeholp87/defrag-hdd-linux/issues">Issues</a>
           <a href="https://github.com/mikeholp87/defrag-hdd-linux/blob/main/LICENSE">License</a>
           <a href="https://github.com/mikeholp87/defrag-hdd-linux/blob/main/docs/architecture.md">Architecture</a>
